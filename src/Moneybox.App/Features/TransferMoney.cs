@@ -19,16 +19,26 @@ namespace Moneybox.App.Features
         {
             var from = this.accountRepository.GetAccountById(fromAccountId);
             var to = this.accountRepository.GetAccountById(toAccountId);
+            
+            if (from==null)
+            {
+                throw new InvalidOperationException("There is no details for From account details");
+            }
+
+            if (to == null)
+            {
+                throw new InvalidOperationException("There is no details for To account details");
+            }
 
             var fromBalance = from.Balance - amount;
-            if (fromBalance < 0m)
+            if (fromBalance <= 0m)
             {
                 throw new InvalidOperationException("Insufficient funds to make transfer");
             }
 
             if (fromBalance < 500m)
             {
-                this.notificationService.NotifyFundsLow(from.User.Email);
+                this.notificationService.NotifyFundslow(from.User.Email);
             }
 
             var paidIn = to.PaidIn + amount;
@@ -38,15 +48,12 @@ namespace Moneybox.App.Features
             }
 
             if (Account.PayInLimit - paidIn < 500m)
-            {
-                this.notificationService.NotifyApproachingPayInLimit(to.User.Email);
-            }
+                {
+                    this.notificationService.NotifyApproachingPayInLimit(to.User.Email);
+                }
 
-            from.Balance = from.Balance - amount;
-            from.Withdrawn = from.Withdrawn - amount;
-
-            to.Balance = to.Balance + amount;
-            to.PaidIn = to.PaidIn + amount;
+            from.Withdraw(amount);
+            to.Deposit(amount);
 
             this.accountRepository.Update(from);
             this.accountRepository.Update(to);
