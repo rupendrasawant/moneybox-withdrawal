@@ -4,6 +4,6 @@
     {
         void NotifyApproachingPayInLimit(string emailAddress);
 
-        void NotifyFundsLow(string emailAddress);
+        void NotifyFundslow(string emailAddress);
     }
 }
