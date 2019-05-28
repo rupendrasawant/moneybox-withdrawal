@@ -24,3 +24,14 @@ As part of this process however, you should look to refactor some of the code in
 Once you have completed your work, send us a link to your public repository.
 
 Good luck!
+
+
+Details of Works
+
+1. I have kept same structure of folder as per project given like feature folder has two file TransferMoney and WithdrawMoney
+
+2. there two unit test file in project Moneybox.Tests
+
+3. In withdraw Money there is only balance deducted from balance
+
+4. The common code is moved to common domain / Account.cs file
